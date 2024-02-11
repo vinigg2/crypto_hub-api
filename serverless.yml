@@ -1,0 +1,25 @@
+service: crypto-hub-api
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline-sqs
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    host: 0.0.0.0
+  serverless-offline-sqs:
+    endpoint: http://localhost:4566
+
+provider:
+  memorySize: 256
+  name: aws
+  region: us-east-1
+  runtime: nodejs20.x
+  stage: dev
+  versionFunctions: false
+  timeout: 120
+
+# functions:
+#   - ${file(./tests/serverless/functions.yml)}
+#   - ${file(./tests/serverless/mock-server.yml)}
