@@ -1,7 +1,7 @@
 -- CREATE DATABASE
 CREATE DATABASE IF NOT EXISTS crypto;
 
--- USERS TABLE
+-- USER TABLE
 CREATE TABLE IF NOT EXISTS crypto.user (
     id VARCHAR(36) PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -25,15 +25,12 @@ CREATE TABLE IF NOT EXISTS crypto.profile (
     FOREIGN KEY (user_id) REFERENCES crypto.user(id)
 );
 
--- BROKERAGE REGISTRATION TABLE
-CREATE TABLE IF NOT EXISTS crypto.brokerage_registration (
-    id VARCHAR(36) PRIMARY KEY,
+-- BROKERAGE LIST TABLE
+CREATE TABLE IF NOT EXISTS crypto.brokerage_list (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    token VARCHAR(255) NOT NULL,
-    profile_id VARCHAR(36),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (profile_id) REFERENCES crypto.profile(id)
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- ADDRESS TABLE
@@ -43,10 +40,10 @@ CREATE TABLE IF NOT EXISTS crypto.address (
     city VARCHAR(100),
     state VARCHAR(100),
     zipcode INT(8),
-    profile_id VARCHAR(36),
+    profile VARCHAR(36),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (profile_id) REFERENCES crypto.profile(id)
+    FOREIGN KEY (profile) REFERENCES crypto.profile(id)
 );
 
 -- DOCUMENTS TABLE
@@ -54,34 +51,45 @@ CREATE TABLE IF NOT EXISTS crypto.document (
     id VARCHAR(36) PRIMARY KEY,
     type_document VARCHAR(100),
     number_document VARCHAR(100),
-    profile_id VARCHAR(36),
+    profile VARCHAR(36),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (profile_id) REFERENCES crypto.profile(id)
+    FOREIGN KEY (profile) REFERENCES crypto.profile(id)
 );
 
 -- TRANSACTION CONFIGURATION TABLE
-CREATE TABLE IF NOT EXISTS crypto.transaction_config (
+CREATE TABLE IF NOT EXISTS crypto.wallet_config (
     id VARCHAR(36) PRIMARY KEY,
     code VARCHAR(255) NOT NULL,
     available_value FLOAT,
+    brokerage INT,
+    token VARCHAR(255) NOT NULL,
     quantity FLOAT,
-    user_id VARCHAR(36),
     active BOOLEAN DEFAULT FALSE,
     lever INT DEFAULT 1,
-    broker_id VARCHAR(36),
-    profile_id VARCHAR(36),
+    profile VARCHAR(36),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (broker_id) REFERENCES crypto.brokerage_registration(id),
-    FOREIGN KEY (profile_id) REFERENCES crypto.profile(id)
+    FOREIGN KEY (brokerage) REFERENCES crypto.brokerage_list(id),
+    FOREIGN KEY (profile) REFERENCES crypto.profile(id)
+);
+
+-- WALLET TABLE
+CREATE TABLE IF NOT EXISTS crypto.wallet (
+    id VARCHAR(36) PRIMARY KEY,
+    wallet_config VARCHAR(36),
+    profile VARCHAR(36),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (wallet_config) REFERENCES crypto.wallet_config(id),
+    FOREIGN KEY (profile) REFERENCES crypto.profile(id)
 );
 
 -- TRANSACTIONS TABLE
 CREATE TABLE IF NOT EXISTS crypto.transactions (
     id VARCHAR(36) PRIMARY KEY,
-    profile_id VARCHAR(36),
-    transaction_config_id VARCHAR(36),
+    profile VARCHAR(36),
+    wallet VARCHAR(36),
     type ENUM('BUY', 'SELL') NOT NULL,
     quantity FLOAT NOT NULL,
     price FLOAT NOT NULL,
@@ -95,6 +103,6 @@ CREATE TABLE IF NOT EXISTS crypto.transactions (
     count INT CHECK (count <= 3),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (profile_id) REFERENCES crypto.profile(id),
-    FOREIGN KEY (transaction_config_id) REFERENCES crypto.transaction_config(id)
+    FOREIGN KEY (profile) REFERENCES crypto.profile(id),
+    FOREIGN KEY (wallet) REFERENCES crypto.wallet(id)
 );
