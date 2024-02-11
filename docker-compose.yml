@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   dev-host:
-    image: app-boilerplate-api:latest
+    image: crypto_hub-api:latest
     build:
       context: .
       dockerfile: scripts/Dockerfile
@@ -25,7 +25,7 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
   seeder:
-    image: app-boilerplate-api:latest
+    image: crypto_hub-api:latest
     network_mode: "service:dev-host"
     environment:
       - AWS_DEFAULT_REGION=us-east-1
