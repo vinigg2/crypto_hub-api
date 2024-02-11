@@ -12,6 +12,7 @@ services:
       - 4000:4000
       - 4566:4566
       - 3306:3306
+      - 5432:5432
   mysql:
     image: mysql:5.7.41-debian
     network_mode: "service:dev-host"
@@ -35,7 +36,7 @@ services:
       - AWS_ENDPOINT=http://localhost:4566
     volumes:
      - ./scripts:/scripts
-    entrypoint: [ "sh", "-c", "sleep 5 && /scripts/create-database.sh && /scripts/create-s3.sh"]
+    entrypoint: [ "sh", "-c", "sleep 5 && /scripts/create-queues.sh && /scripts/create-database.sh && /scripts/create-s3.sh"]
     depends_on:
       - localstack
       - mysql
