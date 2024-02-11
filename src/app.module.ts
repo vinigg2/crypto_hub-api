@@ -1,8 +1,15 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import configuration from '@config';
+
+// Modules
+import { HealthModule } from '@modules/health/health.module';
+import { AuthModule } from '@modules/auth/auth.module';
 import { UsersModule } from '@modules/users/users.module';
+import { ProfileModule } from '@modules/profile/profile.module';
+import { CommonAuthMiddleware } from './common/middlewares/common-auth.middleware';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -15,7 +22,22 @@ import { UsersModule } from '@modules/users/users.module';
       useFactory: (config: ConfigService) =>
         config.get<TypeOrmModuleOptions>('database'),
     }),
+    HealthModule,
+    AuthModule,
+    ProfileModule,
     UsersModule,
   ],
+  providers: [JwtService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(CommonAuthMiddleware)
+      .exclude(
+        { path: 'health', method: RequestMethod.GET },
+        { path: 'auth/login', method: RequestMethod.POST },
+        { path: 'auth/register', method: RequestMethod.POST }, // TODO: REMOVE THIS IS PRODUCTION
+      )
+      .forRoutes('*');
+  }
+}
