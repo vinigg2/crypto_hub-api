@@ -8,4 +8,8 @@ export const app = {
     endpoint: process.env.AWS_ENDPOINT,
     bucket_name: process.env.S3_BUCKET_NAME,
   },
+  binance: {
+    api_key: process.env.BINANCE_API_KEY,
+    secret_key: process.env.BINANCE_SECRET_KEY,
+  },
 };

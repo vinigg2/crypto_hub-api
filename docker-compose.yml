@@ -41,7 +41,7 @@ services:
       - localstack
       - mysql
   app:
-    image: node:16-bullseye-slim
+    image: node:20-bullseye-slim
     network_mode: "service:dev-host"
     env_file:
       - .env
@@ -49,6 +49,6 @@ services:
       - ./:/app
       - ./tmp/s3-buckets/local-bucket:/tmp/s3-buckets/local-bucket
     working_dir: /app
-    entrypoint: [ "sh", "-c", "sleep 15 && rm -Rf /tmp/s3-buckets/local-bucket/* && yarn start:dev"] 
+    entrypoint: [ "sh", "-c", "sleep 15 && apt-get update && apt-get install -y procps && rm -Rf /tmp/s3-buckets/local-bucket/* && yarn start:dev"] 
     depends_on:
       - seeder

@@ -10,6 +10,8 @@ import { UsersModule } from '@modules/users/users.module';
 import { ProfileModule } from '@modules/profile/profile.module';
 import { CommonAuthMiddleware } from './common/middlewares/common-auth.middleware';
 import { JwtService } from '@nestjs/jwt';
+import { BinanceService } from './common/services/binance/binance.service';
+import { BtcPriceService } from './common/services/cryptos/btc-price.service';
 
 @Module({
   imports: [
@@ -27,7 +29,7 @@ import { JwtService } from '@nestjs/jwt';
     ProfileModule,
     UsersModule,
   ],
-  providers: [JwtService],
+  providers: [JwtService, BinanceService, BtcPriceService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
