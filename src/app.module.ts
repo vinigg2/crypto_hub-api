@@ -3,15 +3,20 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import configuration from '@config';
 
+// Middleware
+import { CommonAuthMiddleware } from './common/middlewares/common-auth.middleware';
+
+// Services
+import { BinanceService } from './common/services/binance/binance.service';
+import { BtcPriceService } from './common/services/cryptos/btc-price.service';
+
 // Modules
 import { HealthModule } from '@modules/health/health.module';
 import { AuthModule } from '@modules/auth/auth.module';
 import { UsersModule } from '@modules/users/users.module';
 import { ProfileModule } from '@modules/profile/profile.module';
-import { CommonAuthMiddleware } from './common/middlewares/common-auth.middleware';
 import { JwtService } from '@nestjs/jwt';
-import { BinanceService } from './common/services/binance/binance.service';
-import { BtcPriceService } from './common/services/cryptos/btc-price.service';
+import { TransactionModule } from './modules/transaction/transaction.module';
 
 @Module({
   imports: [
@@ -28,6 +33,7 @@ import { BtcPriceService } from './common/services/cryptos/btc-price.service';
     AuthModule,
     ProfileModule,
     UsersModule,
+    TransactionModule,
   ],
   providers: [JwtService, BinanceService, BtcPriceService],
 })

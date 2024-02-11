@@ -7,7 +7,7 @@ import { IBuyBinance, ISellBinance } from './binance.interface';
 @Injectable()
 export class BinanceService {
   private readonly binanceWebSocketUrl =
-    'wss://stream.binance.com:9443/ws/btcusdt@trade';
+    'wss://stream.binance.com:9443/ws/btcusdt@trade'; // TODO: Set this at .env
   private readonly socket: WebSocket;
   private readonly priceSubject: Subject<number> = new Subject<number>();
   private previousPrice: number;
