@@ -9,7 +9,6 @@ export class CreateUserController {
 
   @Post()
   public async execute(@Body() user: CreateUserDTO): Promise<User> {
-    // faz as tratativas necessárias nos dados
     return await this.createUsersUseCase.execute(user);
   }
 }

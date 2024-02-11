@@ -1,3 +1,5 @@
+import { UserStatus } from '@src/modules/users/dtos/create-user.dto';
+import { Exclude } from 'class-transformer';
 import {
   Column,
   CreateDateColumn,
@@ -15,8 +17,19 @@ export class User {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
+
+  @Column({ select: false })
+  @Exclude()
+  password: string;
+
+  @Column({
+    type: 'enum',
+    enum: UserStatus,
+    default: UserStatus.ACTIVE,
+  })
+  status: UserStatus;
 
   @CreateDateColumn()
   created_at: Date;

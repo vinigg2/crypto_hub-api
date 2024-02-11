@@ -8,13 +8,18 @@ import { IUserRepository } from '@modules/users/repositories/IUserRepository';
 export class UsersRepositoryInMemory implements IUserRepository {
   users: User[] = [];
 
-  async create({ name, email }: CreateUserDTO): Promise<User> {
-    console.log('canto errado');
-
+  async create({
+    name,
+    email,
+    password,
+    status,
+  }: CreateUserDTO): Promise<User> {
     const user = {
       id: uuid(),
       name,
+      password,
       email,
+      status,
       created_at: new Date(),
     };
 
@@ -23,10 +28,7 @@ export class UsersRepositoryInMemory implements IUserRepository {
     return user;
   }
 
-  show(id: string): Promise<User> {
-    throw new Error('Method not implemented.');
-  }
-  list(): Promise<User[]> {
+  async showByEmail(email: string): Promise<User> {
     throw new Error('Method not implemented.');
   }
 }

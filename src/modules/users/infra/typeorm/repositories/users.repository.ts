@@ -3,6 +3,7 @@ import { IUserRepository } from '@modules/users/repositories/IUserRepository';
 import { EntityManager, EntityRepository, Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { User } from '@modules/users/infra/typeorm/entities/user.entity';
+import { CreateUserException } from '../../exceptions/create-user.exceptions';
 
 @EntityRepository(User)
 export class UsersRepository implements IUserRepository {
@@ -12,23 +13,33 @@ export class UsersRepository implements IUserRepository {
     this.ormRepository = manager.getRepository(User);
   }
 
-  async create({ email, name }: CreateUserDTO): Promise<User> {
-    const newUser = this.ormRepository.create({
-      id: uuid(),
-      name,
-      email,
-    });
+  async showByEmail(email: string): Promise<User> {
+    try {
+      const findUser = await this.ormRepository.findOne(
+        { email },
+        { select: ['password', 'id'] },
+      );
 
-    this.ormRepository.save(newUser);
-
-    console.log('funfa', newUser);
-
-    return newUser;
+      return findUser;
+    } catch (err) {
+      throw new Error('Method not implemented.');
+    }
   }
-  show(id: string): Promise<User> {
-    throw new Error('Method not implemented.');
-  }
-  list(): Promise<User[]> {
-    throw new Error('Method not implemented.');
+
+  async create({ email, name, password }: CreateUserDTO): Promise<User> {
+    try {
+      const newUser = this.ormRepository.create({
+        id: uuid(),
+        name,
+        password,
+        email,
+      });
+
+      this.ormRepository.save(newUser);
+
+      return newUser;
+    } catch (err) {
+      throw new CreateUserException();
+    }
   }
 }
