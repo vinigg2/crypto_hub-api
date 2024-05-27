@@ -14,6 +14,9 @@ export class Brokerage {
   @Column()
   name: string;
 
+  @Column()
+  slug: string;
+
   @CreateDateColumn()
   created_at: Date;
 

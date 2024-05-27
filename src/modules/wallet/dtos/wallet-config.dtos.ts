@@ -4,7 +4,8 @@ export class WalletConfigDTO {
   available_value: number;
   quantity: number;
   active: boolean;
-  token: string;
+  apiKey: string;
+  apiSecret: string;
   brokerage: any;
   profile: any;
   created_at: Date;

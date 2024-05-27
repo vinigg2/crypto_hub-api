@@ -40,11 +40,6 @@ export class ProfileRepository implements IProfileRepository {
         relations: ['user'],
       },
     );
-
-    if (!profile) {
-      throw new FindProfileException();
-    }
-
     return profile;
   }
 }

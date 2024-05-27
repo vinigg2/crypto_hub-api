@@ -18,7 +18,7 @@ export class CreateUserUseCase {
       user.password = await this.bCryptHashProvider.generateHash(user.password);
       return await this.ormRepository.create(user);
     } catch (err) {
-      throw new CreateUserException();
+      throw new CreateUserException(err);
     }
   }
 }

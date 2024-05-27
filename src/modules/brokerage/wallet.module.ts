@@ -15,11 +15,11 @@ import { ListBrokerageUseCase } from './useCases/listBrokerage/list-brokerage.us
   providers: [
     ListBrokerageUseCase,
     {
-      provide: 'USERS_REPOSITORY',
+      provide: 'BROKERAGE_REPOSITORY',
       inject: [Brokerage],
       useClass: Brokerage,
     },
   ],
   exports: [ListBrokerageUseCase],
 })
-export class WalletModule {}
+export class BrokerageModule {}

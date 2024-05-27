@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 export class AuthenticationException extends HttpException {
-  constructor() {
-    super('E-mail or password wrong', HttpStatus.NOT_FOUND);
+  constructor(err?: Error, status = HttpStatus.INTERNAL_SERVER_ERROR) {
+    super(err.message || 'E-mail or password wrong', status);
   }
 }

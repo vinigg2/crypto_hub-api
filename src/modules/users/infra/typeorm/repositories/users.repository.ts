@@ -1,4 +1,4 @@
-import { CreateUserDTO } from '@modules/users/dtos/create-user.dto';
+import { CreateUserDTO, UserStatus } from '@modules/users/dtos/create-user.dto';
 import { IUserRepository } from '@modules/users/repositories/IUserRepository';
 import { EntityManager, EntityRepository, Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
@@ -13,14 +13,33 @@ export class UsersRepository implements IUserRepository {
     this.ormRepository = manager.getRepository(User);
   }
 
+  async show(id: string): Promise<User> {
+    try {
+      return await this.ormRepository.findOne(
+        {
+          id,
+          status: UserStatus.ACTIVE,
+        },
+        {
+          select: ['password', 'name', 'id', 'email'],
+        },
+      );
+    } catch (err) {
+      throw new Error('Method not implemented.');
+    }
+  }
+
   async showByEmail(email: string): Promise<User> {
     try {
-      const findUser = await this.ormRepository.findOne(
-        { email },
-        { select: ['password', 'id'] },
+      return await this.ormRepository.findOne(
+        {
+          email,
+          status: UserStatus.ACTIVE,
+        },
+        {
+          select: ['password', 'name', 'id', 'email'],
+        },
       );
-
-      return findUser;
     } catch (err) {
       throw new Error('Method not implemented.');
     }

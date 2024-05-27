@@ -32,7 +32,10 @@ export class WalletConfig {
   lever: number;
 
   @Column()
-  token: string;
+  apiKey: string;
+
+  @Column()
+  apiSecret: string;
 
   @OneToOne(() => Brokerage, (broker) => broker, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'broker' })

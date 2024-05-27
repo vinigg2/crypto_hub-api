@@ -27,8 +27,10 @@ export class UsersRepositoryInMemory implements IUserRepository {
 
     return user;
   }
-
   async showByEmail(email: string): Promise<User> {
+    throw new Error('Method not implemented.');
+  }
+  async show(id: string): Promise<User> {
     throw new Error('Method not implemented.');
   }
 }

@@ -1,7 +1,10 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 export class CreateUserException extends HttpException {
-  constructor() {
-    super('Error create user', HttpStatus.INTERNAL_SERVER_ERROR);
+  constructor(err?: Error) {
+    super(
+      `Error create user. message ${err.message}`,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+    );
   }
 }

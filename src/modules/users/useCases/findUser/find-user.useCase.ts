@@ -12,4 +12,7 @@ export class FindUserUseCase {
   public async byEmail(email: string): Promise<User> {
     return await this.ormRepository.showByEmail(email);
   }
+  public async byId(id: string): Promise<User> {
+    return await this.ormRepository.show(id);
+  }
 }

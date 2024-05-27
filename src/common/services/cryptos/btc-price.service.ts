@@ -1,15 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { BinanceService } from '../binance/binance.service';
+import { BinanceStreamService } from '../binance/binance-stream.service';
+import { WebsocketGateway } from '@src/websocket/websocket.gateway';
 
 @Injectable()
 export class BtcPriceService {
-  constructor(private readonly binanceService: BinanceService) {
-    this.binanceService.getPriceUpdates().subscribe((price) => {
-      this.handlePriceChange(price);
+  constructor(
+    private readonly binanceStreamService: BinanceStreamService,
+    private readonly websocketGateway: WebsocketGateway,
+  ) {
+    this.binanceStreamService.getPriceUpdates().subscribe((btc) => {
+      this.handlePriceChange(btc);
     });
   }
 
-  private handlePriceChange(price: number) {
-    console.log('Preço do BTC mudou para:', price);
+  private handlePriceChange(btc: any) {
+    const payload = {
+      message: 'update:btc',
+      data: btc,
+    };
+
+    this.websocketGateway.sendToAll(payload);
   }
 }

@@ -4,4 +4,5 @@ import { User } from '../infra/typeorm/entities/user.entity';
 export interface IUserRepository {
   create(user: CreateUserDTO): Promise<User>;
   showByEmail(email: string): Promise<User>;
+  show(id: string): Promise<User>;
 }

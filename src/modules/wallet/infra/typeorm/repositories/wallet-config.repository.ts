@@ -12,10 +12,10 @@ export class WalletConfigRepository implements IWalletConfigRepository {
   constructor(manager: EntityManager) {
     this.ormRepository = manager.getRepository(WalletConfig);
   }
-
   async create({
-    brokerage,
-    token,
+    broker,
+    apiKey,
+    apiSecret,
     code,
     available_value,
     quantity,
@@ -31,8 +31,9 @@ export class WalletConfigRepository implements IWalletConfigRepository {
         quantity,
         active,
         lever,
-        token,
-        brokerage,
+        apiKey,
+        apiSecret,
+        broker,
         profile,
       };
 

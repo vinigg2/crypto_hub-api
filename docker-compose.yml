@@ -6,9 +6,7 @@ services:
       context: .
       dockerfile: scripts/Dockerfile
     command: sh -c "touch .pid && tail -f .pid"
-    ports:      
-      - 3000:3000
-      - 3002:3002
+    ports:
       - 4000:4000
       - 4566:4566
       - 3306:3306
@@ -49,6 +47,6 @@ services:
       - ./:/app
       - ./tmp/s3-buckets/local-bucket:/tmp/s3-buckets/local-bucket
     working_dir: /app
-    entrypoint: [ "sh", "-c", "sleep 15 && apt-get update && apt-get install -y procps && rm -Rf /tmp/s3-buckets/local-bucket/* && yarn start:dev"] 
+    entrypoint: [ "sh", "-c", "sleep 15 && apt-get update && apt-get install -y procps && rm -Rf /tmp/s3-buckets/local-bucket/* && yarn start:dev"]
     depends_on:
       - seeder

@@ -8,9 +8,16 @@ import { CreateWalletExceptions } from '../../exceptions/create-wallet.exception
 export class CreateWalletController {
   constructor(private createFoundItemUseCase: CreateWalletUseCase) {}
   @Post()
-  public async execute(@Body() item: CreateWalletConfigDTO): Promise<Wallet> {
+  public async execute(
+    @Req() request: any,
+    @Body() item: CreateWalletConfigDTO,
+  ): Promise<Wallet> {
     try {
-      return await this.createFoundItemUseCase.execute(item);
+      // console.log(request);
+      return await this.createFoundItemUseCase.execute({
+        ...item,
+        profile: request.profile,
+      });
     } catch (e) {
       new CreateWalletExceptions();
     }

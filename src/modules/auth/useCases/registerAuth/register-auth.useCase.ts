@@ -23,6 +23,11 @@ export class RegisterAuthUseCase {
       accessToken,
       expiresIn: '1d',
       tokenType: 'user',
+      user: {
+        email: user.email,
+        name: user.name,
+        id: user.id,
+      },
     };
   }
 }

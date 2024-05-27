@@ -4,5 +4,4 @@ import { WalletDTO } from '../dtos/wallet.dtos';
 export interface IWalletRepository {
   create(item: CreateWalletDTO): Promise<WalletDTO>;
   show(id: string): Promise<WalletDTO>;
-  list(): Promise<WalletDTO[]>;
 }
